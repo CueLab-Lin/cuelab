@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CueLab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="CueLab — a Mac tool for DJs: 8 cues set automatically, next-track suggestions, mix preview, learn from 1001tracklists sets, one tap into Serato DJ Pro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a Serato-dark stage. Hero = big wordmark + the promo in a phone; then the A–H pad strip as the spine of the page, features alternating text/screen, install steps, footer. */
+:root {
+  --ink: #0a0b10; --stage: #11131b; --panel: #171a25; --line: #262a3b;
+  --text: #eef0f7; --muted: #8e94ad; --blue: #4f8cff; --blue-2: #2f6cf0;
+  --pa: #d42a2a; --pb: #e08a12; --pc: #1730ec; --pd: #d4cf10; --pe: #27c40c; --pf: #d116c9; --pg: #12b8b0; --ph: #8a1fe0;
+  --display: "Unbounded", "Noto Sans TC", system-ui, sans-serif;
+  --body: "Inter", "Noto Sans TC", -apple-system, "PingFang TC", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --r: 14px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+body { background: var(--ink); color: var(--text); font: 400 16px/1.65 var(--body); -webkit-font-smoothing: antialiased; }
+html[data-lang="zh"] .en, html[data-lang="en"] .zh { display: none !important; }
+a { color: inherit; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* top bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: color-mix(in srgb, var(--ink) 82%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 16px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 19px var(--display); letter-spacing: -.01em; }
+.brand img { width: 30px; height: 30px; border-radius: 8px; }
+.word b { color: var(--blue); font-weight: inherit; }
+.top nav { margin-left: auto; display: flex; gap: 22px; font-size: 14px; color: var(--muted); }
+.top nav a { text-decoration: none; }
+.top nav a:hover { color: var(--text); }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lang button { all: unset; cursor: pointer; padding: 4px 11px; font: 600 12px var(--body); color: var(--muted); }
+.lang button[aria-pressed="true"] { background: var(--text); color: var(--ink); }
+.lang button:focus-visible, .btn:focus-visible, .sound:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+@media (max-width: 760px) { .top nav { display: none; } .lang { margin-left: auto; } }
+
+/* hero */
+.hero { padding-block: 72px 40px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: center; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); display: flex; gap: 10px; align-items: center; }
+html[data-lang="zh"] .eyebrow { letter-spacing: .04em; font-family: var(--body); }
+.eyebrow i { width: 8px; height: 8px; border-radius: 2px; background: var(--pf); display: inline-block; }
+h1 { font: 800 clamp(44px, 7.4vw, 92px)/.98 var(--display); letter-spacing: -.035em; margin: 18px 0 20px; text-wrap: balance; }
+h1 .zh { font-family: "Noto Sans TC", var(--display); font-weight: 900; letter-spacing: -.02em; line-height: 1.08; }
+h1 em { font-style: normal; color: var(--blue); }
+.lede { font-size: 19px; color: #c7cbe0; max-width: 34em; margin: 0 0 30px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 24px; border-radius: 12px; font: 700 16px var(--body); text-decoration: none; cursor: pointer; border: 0; }
+.btn.primary { background: var(--blue); color: #fff; box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--blue) 70%, transparent); }
+.btn.primary:hover { background: var(--blue-2); }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.btn.ghost:hover { border-color: var(--muted); }
+.btn small { font-weight: 500; opacity: .8; }
+.fine { margin-top: 14px; font-size: 13px; color: var(--muted); }
+
+.phone { justify-self: center; width: min(100%, 330px); aspect-ratio: 9 / 16; border-radius: 34px; padding: 10px; background: linear-gradient(160deg, #2a2e40, #0f1118); box-shadow: 0 40px 80px -30px #000, 0 0 0 1px #2c3044 inset; position: relative; }
+.phone video { width: 100%; height: 100%; object-fit: cover; border-radius: 26px; display: block; background: #000; }
+.sound { position: absolute; right: 22px; bottom: 22px; border: 0; cursor: pointer; padding: 8px 13px; border-radius: 999px; background: rgba(10, 11, 16, .72); color: #fff; font: 600 13px var(--body); backdrop-filter: blur(6px); }
+@media (max-width: 860px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } .hero { padding-block: 44px 24px; } }
+
+/* the 8 pads */
+.pads-sec { padding-block: 40px 30px; }
+.pads-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 18px; }
+h2 { font: 700 clamp(28px, 3.6vw, 42px)/1.12 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+h2 .zh { font-family: "Noto Sans TC", var(--display); font-weight: 900; }
+.pads-head p { margin: 0; color: var(--muted); max-width: 36em; }
+.pads { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.pad { border-radius: 12px; padding: 14px 14px 16px; min-height: 108px; display: flex; flex-direction: column; justify-content: space-between; color: #fff; position: relative; overflow: hidden; }
+.pad .k { font: 800 26px/1 var(--display); display: flex; justify-content: space-between; align-items: baseline; }
+.pad .k span { font: 700 13px var(--mono); opacity: .85; }
+.pad .d { font-size: 14px; font-weight: 600; line-height: 1.35; }
+.pad.dark { color: #15140a; }
+.pad:nth-child(1) { background: var(--pa); } .pad:nth-child(2) { background: var(--pb); } .pad:nth-child(3) { background: var(--pc); } .pad:nth-child(4) { background: var(--pd); }
+.pad:nth-child(5) { background: var(--pe); } .pad:nth-child(6) { background: var(--pf); } .pad:nth-child(7) { background: var(--pg); } .pad:nth-child(8) { background: var(--ph); }
+.pad { transition: transform .15s; } .pad:hover { transform: translateY(-3px); }
+@media (max-width: 640px) { .pads { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pad { min-height: 92px; } }
+
+/* features */
+.feat { padding-block: 64px; border-top: 1px solid var(--line); }
+.feat .wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 48px; align-items: center; }
+.feat.flip .wrap > .txt { order: 2; }
+.feat .tag { font: 700 13px var(--mono); color: var(--blue); letter-spacing: .08em; }
+.feat h3 { font: 700 clamp(26px, 3vw, 36px)/1.15 var(--display); letter-spacing: -.02em; margin: 10px 0 14px; text-wrap: balance; }
+.feat h3 .zh { font-family: "Noto Sans TC", var(--display); font-weight: 900; }
+.feat p { color: #c3c7da; margin: 0 0 14px; max-width: 32em; }
+.feat ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--muted); font-size: 15px; }
+.feat li { display: flex; gap: 10px; }
+.feat li::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: .62em; border-radius: 2px; background: var(--blue); }
+.shot { border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: var(--stage); box-shadow: 0 30px 60px -30px #000; }
+.shot img { display: block; width: 100%; height: auto; }
+.chip { display: inline-flex; align-items: center; gap: 8px; font: 700 15px var(--mono); padding: 8px 12px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); margin-bottom: 16px; }
+.chip b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 6px; color: #fff; }
+@media (max-width: 860px) { .feat .wrap { grid-template-columns: minmax(0, 1fr); gap: 26px; } .feat.flip .wrap > .txt { order: 0; } .feat { padding-block: 44px; } }
+
+/* energy arc */
+.arc { background: var(--stage); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 18px 10px; }
+.arc svg { display: block; width: 100%; height: auto; }
+.arc .lbl { fill: var(--muted); font: 500 11px var(--mono); }
+
+/* serato band */
+.serato { padding-block: 80px; border-top: 1px solid var(--line); text-align: center; }
+.serato .big { font: 800 clamp(44px, 9vw, 120px)/1 var(--display); letter-spacing: -.04em; color: var(--blue); margin: 10px 0 6px; }
+.serato .sub { font: 700 clamp(26px, 4vw, 48px)/1 var(--display); margin-bottom: 18px; }
+.serato p { color: var(--muted); max-width: 34em; margin: 0 auto; }
+
+/* install */
+.install { padding-block: 72px; border-top: 1px solid var(--line); }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 28px; counter-reset: s; }
+.step { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; }
+.step .n { font: 800 34px/1 var(--display); color: var(--blue); }
+.step h4 { margin: 12px 0 6px; font-size: 17px; }
+.step p { margin: 0; color: var(--muted); font-size: 15px; }
+.req { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: 14px; }
+.req > span { display: inline-flex; gap: 8px; align-items: center; }
+.req > span::before { content: "✓"; color: var(--pe); font-weight: 700; }
+.dl { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+@media (max-width: 760px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+
+footer { border-top: 1px solid var(--line); padding-block: 30px 40px; color: var(--muted); font-size: 13px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="media/icon.png" alt=""><span class="word">Cue<b>Lab</b></span></a>
+    <nav aria-label="Sections">
+      <a href="#cue"><span class="zh">功能</span><span class="en">Features</span></a>
+      <a href="#learn">LEARN</a>
+      <a href="#install"><span class="zh">下載安裝</span><span class="en">Download</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lzh" data-l="zh">中</button><button type="button" id="len" data-l="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow"><i></i><span class="zh">給 DJ 的 Cue 實驗室 · Serato DJ Pro</span><span class="en">The cue lab for DJs · Serato DJ Pro</span></div>
+        <h1><span class="zh">8 個 Cue<br><em>一鍵</em>打好。</span><span class="en">Eight cues.<br><em>One</em> click.</span></h1>
+        <p class="lede">
+          <span class="zh">CueLab 幫你分析每一首歌，自動打好 A 到 H 八個 Cue 點，推薦下一首、試聽怎麼接，還能從名 DJ 的 Set 學接歌，最後一鍵放進 Serato DJ Pro。</span>
+          <span class="en">CueLab analyses every track and sets cues A to H for you, suggests what to play next, lets you hear the mix before you play it, learns from real DJ sets, and puts it all into Serato DJ Pro in one tap.</span>
+        </p>
+        <div class="cta">
+          <a class="btn primary dlbtn" href="#install"><span class="zh">免費下載 Mac 版</span><span class="en">Download for Mac — free</span></a>
+          <a class="btn ghost" href="#cue"><span class="zh">看看能做什麼</span><span class="en">See what it does</span></a>
+        </div>
+        <div class="fine"><span class="zh">Apple 晶片 Mac（M1 以上）· macOS 12 以上 · 你的音樂只留在你的電腦</span><span class="en">Apple silicon Mac (M1 or newer) · macOS 12+ · your music never leaves your Mac</span></div>
+      </div>
+      <div class="phone">
+        <video id="promo" autoplay muted loop playsinline preload="metadata" poster="media/poster-zh.jpg" aria-label="CueLab promo video">
+          <source src="media/promo-zh.mp4" type="video/mp4">
+        </video>
+        <button type="button" class="sound" id="sound"><span class="zh">🔊 開聲音</span><span class="en">🔊 Sound on</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pads-sec" id="cue">
+    <div class="wrap">
+      <div class="pads-head">
+        <h2><span class="zh">每首歌，同一套 8 個點</span><span class="en">Every track, the same eight points</span></h2>
+        <p><span class="zh">CueLab 聽出主歌、Drop、Breakdown，照你的規則放好。Trap、House、Future Bass 各有自己的數拍方式。</span><span class="en">CueLab hears the verse, the drops and the breakdown and places them by your rules. Trap, House and Future Bass each get their own counting.</span></p>
+      </div>
+      <div class="pads">
+        <div class="pad"><div class="k">A <span>−16 bars</span></div><div class="d"><span class="zh">主歌前 8 個八拍</span><span class="en">16 bars before the verse</span></div></div>
+        <div class="pad dark"><div class="k">B <span>−8 bars</span></div><div class="d"><span class="zh">主歌前 4 個八拍</span><span class="en">8 bars before the verse</span></div></div>
+        <div class="pad"><div class="k">C <span>0:12.89</span></div><div class="d"><span class="zh">第一個主歌</span><span class="en">First verse</span></div></div>
+        <div class="pad dark"><div class="k">D <span>1:10.49</span></div><div class="d"><span class="zh">第一個 Drop</span><span class="en">First drop</span></div></div>
+        <div class="pad dark"><div class="k">E <span>1:16.89</span></div><div class="d"><span class="zh">Breakdown 前 4 個八拍</span><span class="en">8 bars before the breakdown</span></div></div>
+        <div class="pad"><div class="k">F <span>1:29.69</span></div><div class="d"><span class="zh">Breakdown</span><span class="en">Breakdown</span></div></div>
+        <div class="pad dark"><div class="k">G <span>2:20.89</span></div><div class="d"><span class="zh">第二個 Drop</span><span class="en">Second drop</span></div></div>
+        <div class="pad"><div class="k">H <span>2:46.49</span></div><div class="d"><span class="zh">第二個 Drop 結束後</span><span class="en">After the second drop</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap">
+      <div class="txt">
+        <div class="tag">01 · CUE</div>
+        <h3><span class="zh">整個資料夾丟進去，Cue 自己打好</span><span class="en">Drop in a folder. The cues set themselves.</span></h3>
+        <p><span class="zh">一首歌大約 10 秒。調性、BPM、能量、人聲比例一起算好，寫進 Serato 前會先備份，你手動打過的歌自動跳過。</span><span class="en">About 10 seconds a track. Key, BPM, energy and vocals come with it. Your Serato cues are backed up before writing, and tracks you cued by hand are skipped.</span></p>
+        <ul>
+          <li><span class="zh">波形上看得到鼓、Bass、人聲各自在哪裡</span><span class="en">See where the drums, bass and vocals sit on the waveform</span></li>
+          <li><span class="zh">可以做自己的 Cue 模板</span><span class="en">Make your own cue templates</span></li>
+        </ul>
+      </div>
+      <div class="shot"><img class="sw" data-base="cue" src="media/cue-zh.jpg" alt="CueLab CUE screen" width="1400" height="1344" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="feat flip">
+    <div class="wrap">
+      <div class="txt">
+        <div class="tag">02 · MIX</div>
+        <div class="chip"><b style="background:var(--pf)">F</b><span>1:29</span><span>→</span><b style="background:var(--pc)">C</b><span>0:25</span></div>
+        <h3><span class="zh">下一首接什麼？先聽再說</span><span class="en">What's next? Hear it first.</span></h3>
+        <p><span class="zh">照調性、速度、能量、人聲推薦下一首。按一下試聽：B 提早 4 小節不帶低音進來，到 A 的 F 那拍推過去、換低音，B 剛好落在 C。兩台精準對拍。</span><span class="en">Suggestions by key, tempo, energy and vocals. Press preview: B comes in 4 bars early without its bass, on A's F the fader goes over and the bass swaps, and B lands right on C. Both decks beat-matched.</span></p>
+        <ul>
+          <li><span class="zh">一般接法、Drop 接 Drop、Mashup</span><span class="en">Normal mix, drop to drop, mashup</span></li>
+          <li><span class="zh">接順了就加進清單，匯出到 Serato</span><span class="en">Add the good ones to your set and export to Serato</span></li>
+        </ul>
+      </div>
+      <div class="shot"><img class="sw" data-base="mix" src="media/mix-zh.jpg" alt="CueLab MIX screen" width="1400" height="1344" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="feat">
+    <div class="wrap">
+      <div class="txt">
+        <div class="tag">03 · SET</div>
+        <h3><span class="zh">一鍵排一整套 Set</span><span class="en">Build a whole set in one click</span></h3>
+        <p><span class="zh">選長度和能量走勢：暖場、一路往上、經典弧線、高峰時段。CueLab 從你的歌裡挑出接得順的順序。</span><span class="en">Pick a length and an energy shape: warm-up, always up, classic arc or peak time. CueLab picks an order from your tracks that mixes smoothly.</span></p>
+      </div>
+      <div class="arc" aria-label="Energy curve of a 30-minute set">
+        <svg viewBox="0 0 640 230" role="img">
+          <g stroke="#262a3b" stroke-width="1">
+            <line x1="40" y1="30" x2="620" y2="30"/><line x1="40" y1="90" x2="620" y2="90"/><line x1="40" y1="150" x2="620" y2="150"/><line x1="40" y1="200" x2="620" y2="200"/>
+          </g>
+          <path d="M40 186 C 200 150, 330 70, 410 64 S 560 120, 620 128" fill="none" stroke="#4f8cff" stroke-width="2.5" stroke-dasharray="7 6"/>
+          <polyline fill="none" stroke="#5ee0a0" stroke-width="2.5" points="48,130 78,152 108,138 138,140 168,128 198,124 228,118 258,104 288,102 318,96 348,80 378,72 408,70 438,74 468,88 498,96 528,104 558,110 588,114 612,116"/>
+          <g fill="#5ee0a0">
+            <circle cx="48" cy="130" r="4"/><circle cx="108" cy="138" r="4"/><circle cx="168" cy="128" r="4"/><circle cx="228" cy="118" r="4"/><circle cx="288" cy="102" r="4"/><circle cx="348" cy="80" r="4"/><circle cx="408" cy="70" r="5"/><circle cx="468" cy="88" r="4"/><circle cx="528" cy="104" r="4"/><circle cx="588" cy="114" r="4"/>
+          </g>
+          <text class="lbl" x="40" y="222">0</text><text class="lbl" x="178" y="222">8 min</text><text class="lbl" x="322" y="222">15 min</text><text class="lbl" x="468" y="222">23 min</text><text class="lbl" x="588" y="222">30 min</text>
+          <text class="lbl" x="44" y="22">energy</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat flip" id="learn">
+    <div class="wrap">
+      <div class="txt">
+        <div class="tag">04 · LEARN</div>
+        <h3><span class="zh">貼上 1001 網址，學名 DJ 怎麼接</span><span class="en">Paste a 1001tracklists link. Learn how the pros mix.</span></h3>
+        <p><span class="zh">CueLab 讀歌單、在你電腦裡找到這些歌，找出每一次換歌的位置：B 從哪個 Cue 出來、A 在哪裡收。按 ▶ 直接聽原本那一段。</span><span class="en">CueLab reads the tracklist, finds the tracks on your Mac and works out every hand-over: which cue B comes out of and where A leaves. Press ▶ to hear that moment in the original set.</span></p>
+        <ul>
+          <li><span class="zh">缺哪幾首歌一目了然</span><span class="en">See at a glance which tracks you're missing</span></li>
+          <li><span class="zh">整套歌單照 DJ 的順序放進 Serato</span><span class="en">Put the whole set into Serato in the DJ's order</span></li>
+        </ul>
+      </div>
+      <div class="shot"><img class="sw" data-base="learn" src="media/learn-zh.jpg" alt="CueLab LEARN screen" width="1400" height="1344" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="serato">
+    <div class="wrap">
+      <div class="tag mono" style="color:var(--muted)"><span class="zh">最後一步</span><span class="en">The last step</span></div>
+      <div class="big">Serato</div>
+      <div class="sub">DJ Pro</div>
+      <p><span class="zh">Cue 點、流派、整套歌單，一鍵放進 Serato DJ Pro，打開就能練。</span><span class="en">Cues, genres and whole sets go into Serato DJ Pro in one tap. Open it and start practising.</span></p>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="wrap">
+      <h2><span class="zh">下載與安裝</span><span class="en">Download and install</span></h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h4><span class="zh">下載、解壓縮</span><span class="en">Download and unzip</span></h4><p><span class="zh">雙擊 CueLab 壓縮檔，把 CueLab.app 拖進「應用程式」。</span><span class="en">Double-click the zip and drag CueLab.app into Applications.</span></p></div>
+        <div class="step"><div class="n">2</div><h4><span class="zh">第一次：右鍵 → 打開</span><span class="en">First time: right-click → Open</span></h4><p><span class="zh">還是被擋的話，到「系統設定 → 隱私權與安全性」按「強制打開」。</span><span class="en">Still blocked? System Settings → Privacy &amp; Security → Open Anyway.</span></p></div>
+        <div class="step"><div class="n">3</div><h4><span class="zh">加入歌曲，開始分析</span><span class="en">Add tracks and analyse</span></h4><p><span class="zh">寫入 Serato 前記得先把 Serato DJ Pro 關掉。</span><span class="en">Quit Serato DJ Pro before writing your cues.</span></p></div>
+      </div>
+      <div class="req">
+        <span><span class="zh">Apple 晶片 Mac（M1 以上）</span><span class="en">Apple silicon Mac (M1 or newer)</span></span>
+        <span>macOS 12+</span>
+        <span>Serato DJ Pro</span>
+        <span><span class="zh">約 1.2 GB 空間</span><span class="en">About 1.2 GB of space</span></span>
+        <span><span class="zh">免費</span><span class="en">Free</span></span>
+      </div>
+      <div class="dl">
+        <a class="btn primary dlbtn" id="dl" href="#install"><span class="zh">下載 CueLab 2.1</span><span class="en">Download CueLab 2.1</span> <small class="mono">441 MB</small></a>
+        <span class="fine" id="dlnote"><span class="zh">下載連結即將開放，追蹤 Threads 看最新消息。</span><span class="en">The download link is coming soon. Follow on Threads for news.</span></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 DJ LIN · <span class="word">Cue<b>Lab</b></span></span>
+    <a href="https://github.com/CueLab-Lin/cuelab">GitHub</a>
+    <span><span class="zh">Serato DJ Pro 是 Serato 的商標，CueLab 與 Serato 無關。</span><span class="en">Serato DJ Pro is a trademark of Serato. CueLab is not affiliated with Serato.</span></span>
+  </div>
+</footer>
+
+<script>
+// the download link: paste the shared Google Drive (or other) link here
+const DOWNLOAD_URL = 'https://github.com/CueLab-Lin/cuelab/releases/latest/download/CueLab-mac.zip';
+(function () {
+  const root = document.documentElement, vid = document.getElementById('promo');
+  let lang = 'en';
+  try { lang = localStorage.getItem('cuelab.site.lang') || ''; } catch (e) {}
+  if (lang !== 'zh' && lang !== 'en') lang = 'en';      // English first; the 中 button switches
+  function set(l, user) {
+    lang = l; root.dataset.lang = l; root.lang = l === 'zh' ? 'zh-Hant' : 'en';
+    document.getElementById('lzh').setAttribute('aria-pressed', l === 'zh');
+    document.getElementById('len').setAttribute('aria-pressed', l === 'en');
+    document.querySelectorAll('img.sw').forEach((im) => { im.src = 'media/' + im.dataset.base + '-' + l + '.jpg'; });
+    const src = 'media/promo-' + l + '.mp4';
+    if (!vid.currentSrc.endsWith(src)) {
+      vid.poster = 'media/poster-' + l + '.jpg'; vid.src = src;
+      vid.play().catch(() => {});
+    }
+    if (user) { try { localStorage.setItem('cuelab.site.lang', l); } catch (e) {} }
+  }
+  document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => set(b.dataset.l, true)));
+  set(lang, false);
+  const snd = document.getElementById('sound');
+  snd.addEventListener('click', () => {
+    vid.muted = !vid.muted; if (!vid.muted) { vid.currentTime = 0; vid.play().catch(() => {}); }
+    snd.querySelector('.zh').textContent = vid.muted ? '🔊 開聲音' : '🔇 關聲音';
+    snd.querySelector('.en').textContent = vid.muted ? '🔊 Sound on' : '🔇 Sound off';
+  });
+  if (DOWNLOAD_URL) {
+    document.querySelectorAll('.dlbtn').forEach((a) => { a.href = DOWNLOAD_URL; a.target = '_blank'; a.rel = 'noopener'; });
+    document.getElementById('dlnote').hidden = true;
+  }
+})();
+</script>
+</html>

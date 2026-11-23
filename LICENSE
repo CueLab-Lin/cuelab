@@ -1,0 +1,118 @@
+CueLab — 專有軟體授權條款 / Proprietary Software License
+作者 / Author：DJ LIN
+
+Copyright © 2026 DJ LIN。保留一切權利。
+Copyright © 2026 DJ LIN. All rights reserved.
+
+========================================================================
+中文版
+========================================================================
+
+1. 範圍
+   本條款適用於 CueLab 的原始碼、程式、介面設計、Cue 點規則、分析方法、
+   圖示及說明文件（以下稱「本軟體」）。本軟體包含的第三方元件不受本條款
+   限制，依其各自的授權條款處理（見第 6 條）。
+
+2. 允許的使用
+   你可以免費下載作者正式發佈的 CueLab，安裝在自己的電腦上，用於自己的
+   DJ 工作（包含商業演出）。
+
+3. 禁止事項
+   未經作者事先書面同意，不得：
+   (a) 複製、轉載本軟體的全部或任何部分（原始碼、介面、規則、圖示）；
+   (b) 修改本軟體，或以本軟體為基礎製作衍生作品；
+   (c) 散布、轉售、出租、出借、再授權本軟體，或放到其他網站、平台供人下載；
+   (d) 逆向工程、反編譯、反組譯，或用其他方式試圖取得本軟體的原始碼、
+       演算法、Cue 點規則或分析方法；
+   (e) 參考或使用本軟體的程式碼、規則或設計，開發相同或相似功能的產品；
+   (f) 用本軟體的程式碼或輸出結果訓練人工智慧或機器學習模型；
+   (g) 移除或修改本軟體中的著作權、授權或作者標示。
+   原始碼放在 GitHub 上僅供作者本人管理版本，或在作者明確允許下閱讀，
+   不代表授權他人使用、複製或修改。
+
+4. 終止
+   違反本條款時，你使用本軟體的權利立即終止，你必須刪除所有本軟體的
+   副本。作者保留依法追究的權利。
+
+5. 免責聲明
+   本軟體依「現狀」提供，不提供任何保證。寫入 Serato 前會自動備份，但
+   作者不對任何資料遺失、Cue 點錯誤、演出問題或其他損害負責。請自行
+   備份你的音樂與 Serato 資料。
+
+6. 第三方元件
+   本軟體使用以下第三方開源元件，這些元件依其原本的授權條款提供，
+   本條款不限制你依那些授權條款享有的權利：
+   - Essentia（AGPL-3.0）
+   - mutagen（GPL-2.0 或更新版本）
+   - librosa（ISC）
+   - Demucs（MIT）
+   - PyTorch / torchaudio（BSD 類授權）
+   - pywebview（BSD-3-Clause）
+   - NumPy、SciPy 等（BSD 類授權）
+   若本條款與第三方授權條款衝突，就該第三方元件而言，以第三方授權
+   條款為準。
+
+7. 聯絡
+   如需複製、合作、商業授權或其他許可，請透過 GitHub 聯絡作者。
+
+========================================================================
+English
+========================================================================
+
+1. Scope
+   These terms cover CueLab's source code, program, interface design, cue
+   point rules, analysis methods, icons and documentation (the "Software").
+   Third-party components included with the Software are not restricted by
+   these terms and remain under their own licenses (see section 6).
+
+2. Permitted use
+   You may download the official CueLab release from the author free of
+   charge, install it on your own computer and use it for your own DJ work
+   (including paid performances).
+
+3. Restrictions
+   Without the author's prior written permission you may not:
+   (a) copy or reproduce all or any part of the Software (source code,
+       interface, rules, icons);
+   (b) modify the Software or create derivative works based on it;
+   (c) distribute, sell, rent, lend or sublicense the Software, or offer it
+       for download on any other website or platform;
+   (d) reverse engineer, decompile, disassemble or otherwise attempt to
+       obtain the Software's source code, algorithms, cue point rules or
+       analysis methods;
+   (e) use the Software's code, rules or design to develop a product with
+       the same or similar functions;
+   (f) use the Software's code or output to train artificial intelligence or
+       machine learning models;
+   (g) remove or change any copyright, license or author notices.
+   Source code hosted on GitHub is there for the author's own version
+   control, or for reading with the author's explicit permission; this does
+   not grant anyone a license to use, copy or modify it.
+
+4. Termination
+   If you break these terms, your right to use the Software ends at once and
+   you must delete all copies. The author reserves all legal remedies.
+
+5. No warranty
+   The Software is provided "as is", without warranty of any kind. It backs
+   up cues before writing to Serato, but the author is not liable for any
+   data loss, wrong cue points, performance problems or other damage. Keep
+   your own backups of your music and Serato library.
+
+6. Third-party components
+   The Software uses the following open-source components, which are
+   provided under their own licenses; these terms do not limit any rights
+   you have under those licenses:
+   - Essentia (AGPL-3.0)
+   - mutagen (GPL-2.0 or later)
+   - librosa (ISC)
+   - Demucs (MIT)
+   - PyTorch / torchaudio (BSD-style)
+   - pywebview (BSD-3-Clause)
+   - NumPy, SciPy and others (BSD-style)
+   Where these terms conflict with a third-party license, the third-party
+   license governs that component.
+
+7. Contact
+   For permission to copy, partnerships, commercial licensing or any other
+   use, contact the author through GitHub.
