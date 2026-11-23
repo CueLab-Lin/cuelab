@@ -42,13 +42,14 @@ Copyright © 2026 DJ LIN. All rights reserved.
 6. 第三方元件
    本軟體使用以下第三方開源元件，這些元件依其原本的授權條款提供，
    本條款不限制你依那些授權條款享有的權利：
-   - Essentia（AGPL-3.0）
-   - mutagen（GPL-2.0 或更新版本）
-   - librosa（ISC）
-   - Demucs（MIT）
+   - Beat This!（CPJKU，MIT）：抓拍子
+   - Demucs（MIT）：人聲／鼓／低音分離
+   - librosa（ISC）、NumPy、SciPy（BSD 類授權）
    - PyTorch / torchaudio（BSD 類授權）
-   - pywebview（BSD-3-Clause）
-   - NumPy、SciPy 等（BSD 類授權）
+   - soundfile（BSD-3-Clause）與 libsndfile、mpg123（LGPL-2.1，動態連結）
+   - python-soxr 與 libsoxr（LGPL-2.1，動態連結）
+   - pywebview（BSD-3-Clause）、PyObjC（MIT）
+   LGPL 元件以獨立的動態函式庫提供，你可以自行替換成相容的版本。
    若本條款與第三方授權條款衝突，就該第三方元件而言，以第三方授權
    條款為準。
 
@@ -103,13 +104,16 @@ English
    The Software uses the following open-source components, which are
    provided under their own licenses; these terms do not limit any rights
    you have under those licenses:
-   - Essentia (AGPL-3.0)
-   - mutagen (GPL-2.0 or later)
-   - librosa (ISC)
-   - Demucs (MIT)
+   - Beat This! (CPJKU, MIT): beat tracking
+   - Demucs (MIT): vocal / drum / bass separation
+   - librosa (ISC), NumPy, SciPy (BSD-style)
    - PyTorch / torchaudio (BSD-style)
-   - pywebview (BSD-3-Clause)
-   - NumPy, SciPy and others (BSD-style)
+   - soundfile (BSD-3-Clause) with libsndfile and mpg123 (LGPL-2.1,
+     dynamically linked)
+   - python-soxr with libsoxr (LGPL-2.1, dynamically linked)
+   - pywebview (BSD-3-Clause), PyObjC (MIT)
+   The LGPL components ship as separate dynamic libraries; you may replace
+   them with compatible versions.
    Where these terms conflict with a third-party license, the third-party
    license governs that component.
 
